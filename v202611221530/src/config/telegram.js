@@ -8,5 +8,11 @@
  */
 export const TELEGRAM_CONFIG = Object.freeze({
     adsgramBlockId: "61312",
+    // Adsgram 测试平台“Yuzu Capy Strike (test)”上的广告位：不用审核、不计收益，只在 ?startapp=addebug 时使用。
+    adsgramTestBlockId: "61314",
     adsgramDebug: false,
+    // 邀请好友：小程序直达链接、好友见面礼和每天第一次分享的奖励（宝石）。
+    miniAppLink: "https://t.me/YuzuCapyBot/play",
+    inviteGiftGems: 20,
+    shareRewardGems: 10,
 });

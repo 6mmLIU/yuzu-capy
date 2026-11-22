@@ -16,6 +16,8 @@ import { GameAudio } from "./platform/audio.js";
 import { flushCloudSaveNow, initCloudSave, readSave, writeSave } from "./platform/saveStore.js";
 import { showRewardAd } from "./platform/ads.js";
 import { createVibe } from "./platform/vibe.js";
+import { readReferrer } from "./platform/invite.js";
+import { TELEGRAM_CONFIG } from "./config/telegram.js";
 
 const gameName = L("柚子豚出击", "Yuzu Capy Strike");
 document.title = gameName;
@@ -121,14 +123,27 @@ async function boot() {
     gameEvents.on("coin", () => audio.playSfx("coin"));
     const ui = new GameUi({ game, data, events: gameEvents, audio, vibe, hud, showRewardAd });
     ui.mount(column);
-    void initCloudSave({
+    // 云存档先定下来，再判断要不要发好友见面礼，避免换设备时重复领取。
+    const grantInviteGift = () => {
+        const referrer = readReferrer();
+        const S = game.save;
+        if (!referrer || S.refGift) return;
+        const gift = TELEGRAM_CONFIG.inviteGiftGems;
+        S.refGift = referrer;
+        S.gems += gift;
+        game.saveNow();
+        hud.pulse("gems");
+        audio.playSfx("coin");
+        hud.showToast(L(`好友送你 ${gift} 宝石见面礼！`, `A gift from your friend: +${gift} gems!`), "ico_gem");
+    };
+    initCloudSave({
         getSave: () => game.save,
         adopt(next) {
             game.replaceSave(next);
             hud.sync();
             ui.sync();
         },
-    });
+    }).then(() => window.setTimeout(grantInviteGift, 1500), () => window.setTimeout(grantInviteGift, 1500));
     window.addEventListener("pointerdown", () => vibe.touched(), { passive: true });
     window.addEventListener("pointermove", (event) => {
         if (event.buttons || event.pointerType === "touch") vibe.touched();

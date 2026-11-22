@@ -6,7 +6,8 @@ import { TELEGRAM_CONFIG } from "../config/telegram.js";
 import { inTelegram } from "./telegram.js";
 
 export function adsgramBlockId() {
-    return String(TELEGRAM_CONFIG.adsgramBlockId || "").trim();
+    const id = adDebugMode() ? TELEGRAM_CONFIG.adsgramTestBlockId || TELEGRAM_CONFIG.adsgramBlockId : TELEGRAM_CONFIG.adsgramBlockId;
+    return String(id || "").trim();
 }
 
 /** 用 t.me/YuzuCapyBot/play?startapp=addebug 打开时进入广告联调：播测试广告，并跳过“过第 3 关才出现”的限制。 */

@@ -8,6 +8,8 @@ import { imageUrl } from "../render/images.js";
 import { clearSave } from "../platform/saveStore.js";
 import { applyUiId } from "./uiId.js";
 import { IS_ZH, L, switchLang } from "../i18n.js";
+import { TELEGRAM_CONFIG } from "../config/telegram.js";
+import { shareInvite, shareRewardAvailable, todayKey } from "../platform/invite.js";
 
 const TABS = [["cards", L("技能", "Skills"), "ico_crit"], ["pals", L("伙伴", "Pals"), "p_duck"], ["camp", L("营地", "Camp"), "i_basket"]];
 const VERSION = "1.0.0";
@@ -70,6 +72,9 @@ export class GameUi {
                 <button class="ui-round ui-side-camp" type="button" data-act="side:camp" data-ref="sideCamp" aria-label="${L("营地", "Camp")}">
                     <img alt="" src="${imageUrl("i_basket")}"><span class="ui-outline">${L("营地", "Camp")}</span><em class="ui-badge is-dot" hidden></em>
                 </button>
+                <button class="ui-round ui-side-invite" type="button" data-act="invite" data-ref="sideInvite" aria-label="${L("邀请好友", "Invite friends")}">
+                    <img alt="" src="${imageUrl("hero_cheer")}"><span class="ui-outline">${L("邀请", "Invite")}</span><em class="ui-badge is-dot" hidden></em>
+                </button>
                 <button class="ui-pill ui-pill-go ui-outline" type="button" data-act="challenge" data-ref="go" hidden></button>
                 <button class="ui-pill ui-pill-buff" type="button" data-act="buff" data-ref="buff" hidden><i class="ui-mark"></i><span class="ui-outline">${L("攻击×2", "ATK ×2")}</span></button>
             </div>
@@ -84,7 +89,7 @@ export class GameUi {
         root.querySelectorAll("[data-ref]").forEach((el) => {
             this.refs[el.dataset.ref] = el;
         });
-        for (const [name, id] of [["ult", "ui.ult"], ["sideCards", "ui.side.cards"], ["sidePals", "ui.side.pals"], ["sideCamp", "ui.side.camp"], ["go", "ui.challenge"], ["buff", "ui.buff"]]) {
+        for (const [name, id] of [["ult", "ui.ult"], ["sideCards", "ui.side.cards"], ["sidePals", "ui.side.pals"], ["sideCamp", "ui.side.camp"], ["sideInvite", "ui.side.invite"], ["go", "ui.challenge"], ["buff", "ui.buff"]]) {
             applyUiId(this.refs[name], id);
         }
         root.addEventListener("click", (event) => this.onClick(event));
@@ -316,6 +321,14 @@ export class GameUi {
             clearSave();
             game.replaceSave(newSave());
             this.audio.syncMusic();
+        } else if (name === "invite") {
+            this.sfx("click");
+            this.panelOpen = false;
+            this.dialog = { kind: "invite" };
+            this.dialogKey = "";
+        } else if (name === "shareInvite") {
+            this.sfx("click");
+            void this.shareToFriends();
         } else if (name === "lang") {
             this.sfx("click");
             game.saveNow();
@@ -326,6 +339,32 @@ export class GameUi {
             this.healthOpen = false;
             this.dialog = null;
             game.saveNow();
+        }
+    }
+
+    /** 打开分享面板；每天第一次分享给宝石奖励。 */
+    async shareToFriends() {
+        const S = this.game.save;
+        const gift = TELEGRAM_CONFIG.inviteGiftGems;
+        const reward = TELEGRAM_CONFIG.shareRewardGems;
+        const text = L(
+            `我在玩《柚子豚出击》：水豚拿弹弓打怪，手机放一边也在变强！从这个链接进来送你 ${gift} 宝石～`,
+            `I'm playing Yuzu Capy Strike: a capybara with a slingshot fights for you, even while your phone rests. Join through this link and get ${gift} free gems!`
+        );
+        const how = await shareInvite(text);
+        if (!how) {
+            this.hud.showToast(L("没能打开分享，请稍后再试", "Couldn't open sharing, please try again"));
+            return;
+        }
+        this.dialog = null;
+        if (how === "copied") this.hud.showToast(L("邀请链接已复制，发给好友吧", "Invite link copied, send it to a friend"));
+        if (shareRewardAvailable(S)) {
+            S.shareDay = todayKey();
+            S.gems += reward;
+            this.sfx("coin");
+            this.hud.pulse("gems");
+            this.hud.showToast(L(`分享奖励 +${reward} 宝石（每天一次）`, `Share reward +${reward} gems (once a day)`), "ico_gem");
+            this.game.saveNow();
         }
     }
 
@@ -355,6 +394,7 @@ export class GameUi {
         setHidden(refs.sidePals.querySelector(".ui-badge"), !palCan);
         const cap = game.basketCap();
         setHidden(refs.sideCamp.querySelector(".ui-badge"), !(cap > 0 && S.basket / cap >= 0.5));
+        setHidden(refs.sideInvite.querySelector(".ui-badge"), !shareRewardAvailable(S));
 
         const farming = S.farm && R.phase === "fight";
         setHidden(refs.go, !farming);
@@ -474,11 +514,15 @@ export class GameUi {
         let key = dialog.kind;
         if (dialog.kind === "pick") key += JSON.stringify([S.offer, S.picks, S.rerolled, this.game.adsOpen()]);
         if (dialog.kind === "welcome") key += `${dialog.sec}|${formatNumber(S.basket)}|${this.game.adsOpen()}`;
+        if (dialog.kind === "invite") key += String(shareRewardAvailable(S));
         if (dialog.kind === "settings") key += JSON.stringify([S.vibe, S.auto, S.autoGo, this.resetArmed]);
         if (key === this.dialogKey) return;
         const first = !this.dialogKey || this.dialogKey[0] !== key[0];
         this.dialogKey = key;
-        mask.innerHTML = dialog.kind === "pick" ? this.pickHtml() : dialog.kind === "welcome" ? this.welcomeHtml() : this.settingsHtml();
+        mask.innerHTML = dialog.kind === "pick" ? this.pickHtml()
+            : dialog.kind === "welcome" ? this.welcomeHtml()
+                : dialog.kind === "invite" ? this.inviteHtml()
+                    : this.settingsHtml();
         if (!first) {
             const box = mask.querySelector(".ui-dialog");
             if (box) box.style.animation = "none";
@@ -505,6 +549,16 @@ export class GameUi {
             ? L("果篮装满啦，常回来收橘子吧", "The basket filled up. Come back often to collect!")
             : L("柚子豚把橘子都装进了果篮", "Yuzu Capy put the oranges in the basket");
         return `<div class="ui-dialog is-small"><div class="ui-title ui-outline">${L("欢迎回来", "Welcome back")}</div><img class="ui-hero-cheer" alt="" src="${imageUrl("hero_cheer")}"><p class="ui-sub">${L("你离开了", "You were away for")} ${formatDuration(this.dialog.sec)}\n${basketLine}</p><div class="ui-gain"><img alt="" src="${imageUrl("ico_stack")}"><strong class="ui-outline">+${formatNumber(S.basket)}</strong></div><div class="ui-actions"><button class="ui-btn ui-outline" type="button" data-act="welcome">${this.game.adsOpen() ? L("收下", "Collect") : L("全部收下", "Collect all")}</button>${ad}</div></div>`;
+    }
+
+    inviteHtml() {
+        const S = this.game.save;
+        const gift = TELEGRAM_CONFIG.inviteGiftGems;
+        const reward = TELEGRAM_CONFIG.shareRewardGems;
+        const rewardLine = shareRewardAvailable(S)
+            ? L(`今天第一次分享，你也得 ${reward} 宝石`, `Share today and you get ${reward} gems too`)
+            : L("今天的分享奖励已经领过了，明天再来", "You got today's share reward, come back tomorrow");
+        return `<div class="ui-dialog is-small"><div class="ui-title ui-outline">${L("邀请好友", "Invite friends")}</div><img class="ui-hero-cheer" alt="" src="${imageUrl("hero_cheer")}"><p class="ui-sub">${L(`好友从你的链接进来，能拿 ${gift} 宝石见面礼`, `Friends who join through your link get ${gift} gems`)}\n${rewardLine}</p>${shareRewardAvailable(S) ? `<div class="ui-gain"><img alt="" src="${imageUrl("ico_gem")}"><strong class="ui-outline">+${reward}</strong></div>` : ""}<div class="ui-actions"><button class="ui-btn is-muted" type="button" data-act="closeDialog">${L("以后再说", "Later")}</button><button class="ui-btn ui-outline" type="button" data-act="shareInvite">${L("分享给好友", "Share")}</button></div></div>`;
     }
 
     settingsHtml() {
