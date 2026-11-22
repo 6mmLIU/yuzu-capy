@@ -33,6 +33,7 @@ const CSS = `
 .ui-side-cards { right: 8px; bottom: calc(var(--pm-safe-bottom) + 274px); background: var(--butter); }
 .ui-side-pals { right: 8px; bottom: calc(var(--pm-safe-bottom) + 208px); background: var(--sky); }
 .ui-side-camp { right: 8px; bottom: calc(var(--pm-safe-bottom) + 142px); background: var(--mint); }
+.ui-side-invite { left: 10px; bottom: calc(var(--pm-safe-bottom) + 268px); background: #ffd6de; }
 .ui-badge { position: absolute; right: -8px; top: -9px; min-width: 22px; height: 22px; border: 2.5px solid var(--ink); border-radius: 11px; background: var(--red); color: #fff; font-size: 12px; line-height: 17px; text-align: center; animation: ui-bob .8s ease-in-out infinite; }
 .ui-badge.is-dot { min-width: 13px; width: 13px; height: 13px; right: -3px; top: -5px; }
 .ui-ult { left: 10px; bottom: calc(var(--pm-safe-bottom) + 146px); width: 66px; height: 66px; background: #fffdf6; }
