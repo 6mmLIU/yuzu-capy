@@ -4,7 +4,7 @@
  * 没配广告位、不在 Telegram 里、没有广告时返回 unavailable，不模拟成功。
  */
 import { TELEGRAM_CONFIG } from "../config/telegram.js";
-import { adsgramBlockId, isRewardAdEnabled } from "./adsConfig.js";
+import { adDebugMode, adsgramBlockId, isRewardAdEnabled } from "./adsConfig.js";
 
 const SDK_URL = "https://sad.adsgram.ai/js/sad.min.js";
 const REWARD_PLACES = new Set(["buff", "pal", "basket", "welcome", "reroll"]);
@@ -44,7 +44,10 @@ function loadSdk() {
 
 function getController(sdk) {
     if (controller) return controller;
-    controller = sdk.init({ blockId: adsgramBlockId(), debug: TELEGRAM_CONFIG.adsgramDebug === true });
+    const debug = TELEGRAM_CONFIG.adsgramDebug === true || adDebugMode();
+    const options = { blockId: adsgramBlockId(), debug };
+    if (debug) options.debugBannerType = "RewardedVideo";
+    controller = sdk.init(options);
     if (controller && typeof controller.addEventListener === "function") {
         for (const name of ["onStart", "onSkip", "onReward", "onError", "onBannerNotFound", "onTooLongSession", "onNonStopShow"]) {
             controller.addEventListener(name, () => {

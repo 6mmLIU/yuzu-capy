@@ -3,7 +3,7 @@
  * 不依赖绘制和平台能力；随机调用顺序也与原版保持一致，便于做对照测试。
  */
 import { L } from "../i18n.js";
-import { isRewardAdEnabled } from "../platform/adsConfig.js";
+import { adDebugMode, isRewardAdEnabled } from "../platform/adsConfig.js";
 import { createFormulas, formatNumber } from "./formulas.js";
 import { basketCap, basketRate, cardLevel, recalcStats, upgradeDisplayValue } from "./stats.js";
 import { nowSeconds } from "./save.js";
@@ -165,7 +165,7 @@ export class BattleGame {
 
     adsOpen() {
         // Telegram 版：只有配置了 Adsgram 广告位、且在 Telegram 里打开时才出现看广告按钮。
-        return isRewardAdEnabled() && this.save.best >= 3;
+        return isRewardAdEnabled() && (this.save.best >= 3 || adDebugMode());
     }
 
     start() {
