@@ -1,0 +1,349 @@
+{
+  "adPalNeed": {
+    "cat": 2,
+    "duck": 1,
+    "monkey": 3,
+    "owl": 2
+  },
+  "basketCapSec": 7200,
+  "bossTimeSec": 30,
+  "bosses": {
+    "boar": {
+      "dmg": 2.4,
+      "gold": 30,
+      "hop": [0.62, 7],
+      "hp": 34,
+      "name": "野猪大王",
+      "size": 150,
+      "skill": "summon",
+      "spd": 26,
+      "spr": "b_boar"
+    },
+    "frog": {
+      "dmg": 2.2,
+      "gold": 30,
+      "hop": [0.9, 22],
+      "hp": 40,
+      "name": "泡澡蛙老板",
+      "size": 150,
+      "skill": "bucket",
+      "spd": 22,
+      "spr": "b_frog"
+    },
+    "yeti": {
+      "dmg": 2.6,
+      "gold": 30,
+      "hop": [0.7, 6],
+      "hp": 46,
+      "name": "雪球大毛怪",
+      "size": 160,
+      "skill": "snow",
+      "spd": 20,
+      "spr": "b_yeti"
+    }
+  },
+  "buffSec": 180,
+  "cardMax": 5,
+  "cards": [
+    {
+      "descByLevel": ["额外射出 1 颗小柚子，每颗 40% 伤害", "额外射出 2 颗小柚子，每颗 40% 伤害", "额外射出 3 颗小柚子，每颗 40% 伤害", "额外射出 4 颗小柚子，每颗 40% 伤害", "额外射出 5 颗小柚子，每颗 40% 伤害"],
+      "ico": "ico_split",
+      "id": "split",
+      "name": "散花弹"
+    },
+    {
+      "descByLevel": ["命中后弹向附近敌人 1 次，每次 70% 伤害", "命中后弹向附近敌人 2 次，每次 70% 伤害", "命中后弹向附近敌人 3 次，每次 70% 伤害", "命中后弹向附近敌人 4 次，每次 70% 伤害", "命中后弹向附近敌人 5 次，每次 70% 伤害"],
+      "ico": "ico_ricochet",
+      "id": "ricochet",
+      "name": "弹弹柚"
+    },
+    {
+      "descByLevel": ["柚子可以穿透 1 个敌人", "柚子可以穿透 2 个敌人", "柚子可以穿透 3 个敌人", "柚子可以穿透 4 个敌人", "柚子可以穿透 5 个敌人"],
+      "ico": "ico_pierce",
+      "id": "pierce",
+      "name": "穿心果"
+    },
+    {
+      "descByLevel": ["暴击率 +7%", "暴击率 +14%", "暴击率 +21%", "暴击率 +28%", "暴击率 +35%"],
+      "ico": "ico_crit",
+      "id": "crit",
+      "name": "瞄准要害"
+    },
+    {
+      "descByLevel": ["暴击伤害 +50%", "暴击伤害 +100%", "暴击伤害 +150%", "暴击伤害 +200%", "暴击伤害 +250%"],
+      "ico": "ico_atk",
+      "id": "heavy",
+      "name": "蓄满力气"
+    },
+    {
+      "descByLevel": ["命中有 7% 几率爆炸，波及周围敌人", "命中有 14% 几率爆炸，波及周围敌人", "命中有 21% 几率爆炸，波及周围敌人", "命中有 28% 几率爆炸，波及周围敌人", "命中有 35% 几率爆炸，波及周围敌人"],
+      "ico": "ico_boom",
+      "id": "boom",
+      "name": "炸毛栗子"
+    },
+    {
+      "descByLevel": ["命中让敌人减速 18%，持续 2 秒", "命中让敌人减速 26%，持续 2 秒", "命中让敌人减速 34%，持续 2 秒", "命中让敌人减速 42%，持续 2 秒", "命中让敌人减速 50%，持续 2 秒"],
+      "ico": "ico_ice",
+      "id": "frost",
+      "name": "冰镇柚子"
+    },
+    {
+      "descByLevel": ["命中后每秒追加 12% 攻击力的伤害，持续 4 秒", "命中后每秒追加 24% 攻击力的伤害，持续 4 秒", "命中后每秒追加 36% 攻击力的伤害，持续 4 秒", "命中后每秒追加 48% 攻击力的伤害，持续 4 秒", "命中后每秒追加 60% 攻击力的伤害，持续 4 秒"],
+      "ico": "ico_poison",
+      "id": "poison",
+      "name": "酸掉牙"
+    },
+    {
+      "descByLevel": ["橘子收益 +20%", "橘子收益 +40%", "橘子收益 +60%", "橘子收益 +80%", "橘子收益 +100%"],
+      "ico": "ico_stack",
+      "id": "gain",
+      "name": "大丰收"
+    },
+    {
+      "descByLevel": ["生命值 +25%", "生命值 +50%", "生命值 +75%", "生命值 +100%", "生命值 +125%"],
+      "ico": "ico_heart",
+      "id": "thick",
+      "name": "皮糙肉厚"
+    },
+    {
+      "descByLevel": ["每秒额外回复 1.5% 生命", "每秒额外回复 3.0% 生命", "每秒额外回复 4.5% 生命", "每秒额外回复 6.0% 生命", "每秒额外回复 7.5% 生命"],
+      "ico": "ico_spring",
+      "id": "regen",
+      "name": "泡泡温泉"
+    },
+    {
+      "descByLevel": ["柚子雨充能速度 +20%", "柚子雨充能速度 +40%", "柚子雨充能速度 +60%", "柚子雨充能速度 +80%", "柚子雨充能速度 +100%"],
+      "ico": "ico_energy",
+      "id": "charge",
+      "name": "元气满满"
+    }
+  ],
+  "chapters": [
+    {
+      "big": ["s_otree1", "s_otree2"],
+      "blot": [188, 221, 149],
+      "boss": "boar",
+      "edge": [233, 217, 168],
+      "ground": [201, 230, 164],
+      "id": "orchard",
+      "line": [157, 198, 124],
+      "name": "橘子果园",
+      "path": [247, 235, 200],
+      "pool": ["mushroom", "mushroom", "boar", "crow"],
+      "small": ["s_crate", "s_fence"]
+    },
+    {
+      "big": ["s_bamboo1", "s_bamboo2"],
+      "blot": [176, 220, 194],
+      "boss": "frog",
+      "edge": [223, 224, 192],
+      "ground": [191, 230, 207],
+      "id": "spring",
+      "line": [143, 195, 166],
+      "name": "温泉竹林",
+      "path": [243, 239, 217],
+      "pool": ["mushroom", "turtle", "slime", "squirrel"],
+      "small": ["s_boulder", "s_lantern"]
+    },
+    {
+      "big": ["s_pine1", "s_pine2"],
+      "blot": [216, 232, 241],
+      "boss": "yeti",
+      "edge": [211, 226, 236],
+      "ground": [230, 241, 247],
+      "id": "snow",
+      "line": [181, 203, 217],
+      "name": "雪松山",
+      "path": [253, 254, 255],
+      "pool": ["boar", "turtle", "slime", "squirrel", "crow"],
+      "small": ["s_snowrock", "s_snowman"]
+    }
+  ],
+  "enemies": {
+    "boar": {
+      "charge": true,
+      "dmg": 1.8,
+      "gold": 1.4,
+      "hop": [0.36, 6],
+      "hp": 1.5,
+      "name": "冲冲猪",
+      "size": 56,
+      "spd": 34,
+      "spr": "e_boar"
+    },
+    "crow": {
+      "dmg": 0.7,
+      "fly": true,
+      "gold": 2.2,
+      "hp": 0.6,
+      "name": "偷橘乌鸦",
+      "size": 50,
+      "spd": 92,
+      "spr": "e_crow"
+    },
+    "mushroom": {
+      "dmg": 1,
+      "gold": 1,
+      "hop": [0.46, 9],
+      "hp": 1,
+      "name": "蘑菇崽",
+      "size": 54,
+      "spd": 40,
+      "spr": "e_mushroom"
+    },
+    "slime": {
+      "dmg": 1,
+      "gold": 1.2,
+      "hop": [0.85, 0],
+      "hp": 1.6,
+      "name": "泥团团",
+      "ooze": true,
+      "size": 62,
+      "spd": 30,
+      "split": 2,
+      "spr": "e_slime"
+    },
+    "slimelet": {
+      "dmg": 0.5,
+      "gold": 0.4,
+      "hop": [0.5, 0],
+      "hp": 0.45,
+      "name": "小泥团",
+      "ooze": true,
+      "size": 36,
+      "spd": 58,
+      "spr": "e_slime"
+    },
+    "squirrel": {
+      "dmg": 1,
+      "gold": 1.3,
+      "hop": [0.4, 10],
+      "hp": 0.8,
+      "name": "橡果松鼠",
+      "ranged": 185,
+      "shot": "i_acorn",
+      "size": 52,
+      "spd": 44,
+      "spr": "e_squirrel"
+    },
+    "turtle": {
+      "dmg": 1.2,
+      "gold": 1.8,
+      "hop": [0.7, 4],
+      "hp": 2.2,
+      "name": "锅盖龟",
+      "shield": 3,
+      "size": 60,
+      "spd": 24,
+      "spr": "e_turtle"
+    }
+  },
+  "palMax": 5,
+  "pals": [
+    {
+      "atkSpr": "p_duck_atk",
+      "cd": 0.38,
+      "cost": [15, 30, 60, 120, 240],
+      "desc": "嘎嘎连射，专打最近的敌人",
+      "id": "duck",
+      "leash": 78,
+      "mul": 0.2,
+      "name": "草帽小鸭",
+      "off": [-62, 34],
+      "rest": [0.6, 1.8],
+      "roam": [28, 52],
+      "run": 210,
+      "size": 44,
+      "spr": "p_duck"
+    },
+    {
+      "atkSpr": "p_cat_atk",
+      "cd": 1.9,
+      "cost": [30, 60, 110, 190, 320],
+      "desc": "扑到敌人身上拍一爪，还能把它拍晕",
+      "id": "cat",
+      "leash": 128,
+      "mul": 1.6,
+      "name": "围巾小猫",
+      "off": [44, -40],
+      "pounce": 250,
+      "rest": [2, 5],
+      "roam": [40, 92],
+      "run": 250,
+      "size": 46,
+      "spr": "p_cat",
+      "walk": ["p_cat_walk", 1.04]
+    },
+    {
+      "atkSpr": "p_owl_atk",
+      "cd": 2.4,
+      "cost": [50, 80, 140, 240, 400],
+      "desc": "羽毛狙击，瞄准血最厚的，必定穿透",
+      "id": "owl",
+      "leash": 118,
+      "mul": 2.6,
+      "name": "困困猫头鹰",
+      "off": [-48, -52],
+      "rest": [3, 6.5],
+      "roam": [46, 72],
+      "run": 170,
+      "size": 50,
+      "spr": "p_owl",
+      "walk": ["p_owl_walk", 1]
+    },
+    {
+      "atkSpr": "p_monkey_atk",
+      "cd": 1.9,
+      "cost": [120, 160, 240, 360, 520],
+      "desc": "雪球范围伤害，还会让敌人变慢",
+      "id": "monkey",
+      "leash": 104,
+      "mul": 1.1,
+      "name": "雪球小猴",
+      "off": [22, 62],
+      "rest": [0.5, 1.6],
+      "roam": [34, 86],
+      "run": 230,
+      "size": 50,
+      "spr": "p_monkey",
+      "walk": ["p_monkey_walk", 0.96]
+    }
+  ],
+  "source": "maker/scripts/Data.lua",
+  "sprites": ["hero_idle", "hero_cheer", "h_body", "h_head", "h_torso", "h_yuzu", "h_sling", "h_foot", "h_paw", "e_mushroom", "e_boar", "e_turtle", "e_slime", "e_squirrel", "e_crow", "b_boar", "b_frog", "b_yeti", "p_duck", "p_duck_atk", "p_cat", "p_cat_atk", "p_owl", "p_owl_atk", "p_monkey", "p_monkey_atk", "p_cat_walk", "p_monkey_walk", "p_owl_walk", "s_otree1", "s_otree2", "s_crate", "s_fence", "s_bamboo1", "s_bamboo2", "s_boulder", "s_lantern", "s_pine1", "s_pine2", "s_snowrock", "s_snowman", "ico_orange", "ico_stack", "ico_gem", "ico_atk", "ico_spd", "ico_inc", "ico_heart", "ico_spring", "ico_ricochet", "ico_split", "ico_pierce", "ico_crit", "ico_boom", "ico_ice", "ico_poison", "ico_energy", "i_yuzu", "i_acorn", "i_snowball", "i_feather", "i_bigyuzu", "i_bucket", "i_basket", "i_grass", "i_pebbles"],
+  "upgrades": [
+    {
+      "base": 10,
+      "color": [255, 183, 166],
+      "grow": 1.17,
+      "ico": "ico_atk",
+      "id": "atk",
+      "name": "弹弓威力"
+    },
+    {
+      "base": 25,
+      "color": [168, 220, 246],
+      "grow": 1.27,
+      "ico": "ico_spd",
+      "id": "spd",
+      "max": 100,
+      "name": "拉弓手速"
+    },
+    {
+      "base": 15,
+      "color": [255, 226, 140],
+      "grow": 1.19,
+      "ico": "ico_inc",
+      "id": "inc",
+      "name": "橘子收成"
+    },
+    {
+      "base": 12,
+      "color": [159, 232, 204],
+      "grow": 1.17,
+      "ico": "ico_heart",
+      "id": "hp",
+      "name": "厚实体格"
+    }
+  ]
+}
